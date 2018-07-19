@@ -6,7 +6,7 @@
                 v-bind:rowsNum="rowsNum"
                 v-bind:cells="cells"
                 v-bind:row="row"
-                @click-cell="fillCell"/>
+                @click-cell="cellClickHandle"/>
 
     </div>
 </template>
@@ -19,49 +19,21 @@
         components: {
             TicTacRow
         },
-
+        props: {
+            colsNum: Number,
+            rowsNum: Number,
+            cells: Array,
+        },
         data: function () {
             return {
-                colsNum: 3,
-                rowsNum: 3
-            }
-        },
-        computed: {
-            cells: {
-                // геттер:
-                get: function () {
-                    let arr = new Array(this.colsNum * this.rowsNum);
-                    for (let i = 0; i < arr.length; i++) {
-                        arr[i] = {
-                            id: i,
-                            content: ""
-                        };
-                    }
-                    return arr;
-                },
-                // сеттер:
-                set: function (id, newValue) {
-                    this.cells[id].content = newValue;
-                }
+
             }
         },
         methods: {
-            fillCell: function (id) {
-                this.cells[id].content === "" ? this.$set(this.cells[id], 'content', "X") : this.$set(this.cells[id], 'content', "");
-                // this.$set(this.someObject, 'b', 2);
-                // Vue.set(object, key, value);
-                this.consoleLog(id);
-            },
-            consoleLog: function (id) {
-                // console.log(this.cells[id].content);
-                console.log(this._computedWatchers.cells.value[id].content);
+            cellClickHandle: function (id) {
+                this.$emit('click-cell', id);
             }
         },
-        mounted: function () {
-            this.$nextTick(function () {
-                // console.log(this.cells[0].content);
-            })
-        }
     }
 </script>
 

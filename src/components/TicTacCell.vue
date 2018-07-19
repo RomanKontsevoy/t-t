@@ -1,23 +1,21 @@
 <template>
-    <div class="cell" @click="$emit('click-cell', cell.id)"> {{ cell.content }} </div>
+    <div class="cell" @click="clickHandle"> {{ content }}</div>
 </template>
 
 <script>
     export default {
         name: "TicTacCell",
         props: {
-          cell: Object
+            content: String,
+            id: Number
         },
         data: function () {
-            return {
-
-            }
+            return {}
         },
-        mounted: function () {
-            this.$nextTick(function () {
-                // console.log(this.cell.id);
-                // console.log(this.cell.content);
-            })
+        methods: {
+            clickHandle: function () {
+                this.$emit('click-cell', this.id);
+            }
         }
     }
 </script>
@@ -36,7 +34,8 @@
         cursor: pointer;
 
     }
+
     .cell:hover {
-         background: #f0f0f0;
-     }
+        background: #f0f0f0;
+    }
 </style>
