@@ -6,23 +6,21 @@
             <router-link class="router-link" to="/with-vuex">Реализация c vuex</router-link>
         </div>
         <HelloWorld
-                msg="Welcome to Your Vue.js App"/>
+                msg="Welcome to Tic-Tac game!"/>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import HelloWorld from './components/HelloWorld.vue'
+    import HelloWorld from '@/components/HelloWorld.vue'
     import Vue from 'vue';
     import VueRouter from 'vue-router';
-    import Vuex from 'vuex';
-    import TicTacGame from './components/without-vuex/TicTacGame'
-    import TicTacGame2 from './components/with-vuex/TicTacGame2'
+    import TicTacGame from '@/components/without-vuex/TicTacGame'
+    import TicTacGame2 from '@/components/with-vuex/TicTacGame2'
 
     /*-------------------Router ---------------*/
 
     Vue.use(VueRouter);
-    Vue.use(Vuex);
 
     const routes = [
         {path: '/without-vuex', component: TicTacGame},
@@ -33,21 +31,11 @@
         routes // сокращённая запись для `routes: routes`
     });
 
-    /*-----------------------Store------------------*/
+    /*-------------------Store------------------*/
 
-    const store = new Vuex.Store({
-        state: {
-            count: 0
-        },
-        mutations: {
-            increment (state) {
-                state.count++
-            }
-        }
-    });
+
 
     export default {
-        store,
         router,
         name: 'app',
         components: {
@@ -65,8 +53,14 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
+        margin-top: 1vh;
     }
+    .container img[src*="logo"] {
+        display: block;
+        margin: 0 auto 15px;
+        max-width: 100px;
+    }
+
     .router-links {
         display: flex;
         justify-content: center;
