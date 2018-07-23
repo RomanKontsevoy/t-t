@@ -2,8 +2,9 @@
     <div id="app" class="container">
         <img src="./assets/logo.png">
         <div class="router-links">
-            <router-link class="router-link" to="/without-vuex">Реализация без vuex</router-link>
-            <router-link class="router-link" to="/with-vuex">Реализация c vuex</router-link>
+            <router-link class="router-link" to="/without-vuex">Крестики-нолики без vuex</router-link>
+            <router-link class="router-link" to="/with-vuex">Крестики-нолики c vuex</router-link>
+            <router-link class="router-link" to="/excel">Excel</router-link>
         </div>
         <HelloWorld
                 msg="Welcome to Tic-Tac game!"/>
@@ -17,6 +18,7 @@
     import VueRouter from 'vue-router';
     import TicTacGame from '@/components/without-vuex/TicTacGame'
     import TicTacGame2 from '@/components/with-vuex/TicTacGame2'
+    import ExcelWrap from '@/components/excel/ExcelWrap'
 
     /*-------------------Router ---------------*/
 
@@ -24,7 +26,8 @@
 
     const routes = [
         {path: '/without-vuex', component: TicTacGame},
-        {path: '/with-vuex', component: TicTacGame2}
+        {path: '/with-vuex', component: TicTacGame2},
+        {path: '/excel', component: ExcelWrap}
     ];
 
     const router = new VueRouter({
@@ -41,7 +44,8 @@
         components: {
             HelloWorld,
             TicTacGame,
-            TicTacGame2
+            TicTacGame2,
+            ExcelWrap
         }
     }
 </script>

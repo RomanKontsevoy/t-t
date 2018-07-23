@@ -31,19 +31,9 @@
             clickHandle: function () {
                 if (!this.isWinner) {
                     this.$store.dispatch('fillCell', this.currentId);
-                    this.consoleClass();
                 }
             },
-            consoleClass: function () {
-                console.log(this.activeClass);
-            }
         },
-
-        mounted: function () {
-            this.$nextTick(function () {
-                this.consoleClass();
-            })
-        }
     }
 </script>
 
@@ -61,7 +51,7 @@
         cursor: pointer;
     }
     .cell:hover {
-        box-shadow: inset 0 0 0 1px purple;
+        box-shadow: inset 0 0 2px purple;
     }
 
     .x-class {
