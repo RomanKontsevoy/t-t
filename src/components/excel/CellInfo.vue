@@ -1,11 +1,14 @@
 <template>
     <div class="game-info">
-        <div v-if="!isWinner">
-            <h3>Next player is: {{nextPlayer}}</h3>
-            <p>Current step: {{nextStep}}</p>
+        <div v-if="activated">
+            <p>ID ячейки: {{currentCell.id}}</p>
+            <p>Номер строки: {{currentCell.rowNum}}</p>
+            <p>Номер столбца: {{currentCell.colNum}}</p>
+            <label for="currentContent">
+                <input id="currentContent" type="text" v-model="currentCell.content">
+            </label>
         </div>
-        <h2 class="winner" v-else>The winner is: <span :class="winnerClass">{{isWinner}}</span>!!!</h2>
-        <button class="reset" :class="{ active: resetActive }" @click="resetGame">Reset game</button>
+        <div @click="consoleInput" class="no-cell" v-else>Ни одна ячейка не выбрана</div>
     </div>
 </template>
 
@@ -13,37 +16,40 @@
     export default {
         name: "CellInfo",
         data: function () {
-            return {
-
-            }
+            return {}
         },
         computed: {
-            nextPlayer() {
-                return this.$store.getters.nextPlayer;
+            cells() {
+                return this.$store.getters.cells;
             },
-            nextStep() {
-                return this.$store.getters.nextStep;
+            activated() {
+                return this.$store.getters.activeCell;
             },
-            isWinner() {
-                return this.$store.getters.isWinner;
+            active() {
+                return this.$store.getters.activeId;
             },
-            resetActive() {
-                return !!this.$store.getters.isWinner;
+            currentCell() {
+                return this.cells[this.active];
             },
-            winnerClass() {
-                if (this.isWinner) {
-                    return {
-                        "x-class" : this.isWinner === "X",
-                        "o-class" : this.isWinner === "O"
-                    }
-                }
-            }
         },
         methods: {
-            resetGame: function () {
-                this.$store.dispatch('createCells');
+            consoleInput: function () {
+                // if (this.activated) {
+                //     console.dir("ID ячейки: " + this.currentCell.id);
+                //     console.dir("Есть активная: " + this.activated)
+                // }
+                // console.dir("ID ячейки: " + this.currentCell.id);
+                // console.dir("Активность ячейки: " + this.currentCell.isActive);
+                // console.log(this.currentCells);
+                // console.log("Столбец: " + this.currentCell.colNum);
+                // console.log("Активность: " + this.currentCell.isActive);
             }
-        }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                // this.consoleInput();
+            })
+        },
     }
 </script>
 
@@ -51,35 +57,7 @@
     .game-info {
         margin-top: 20px;
     }
-    .reset {
-        margin: 20px 10px;
-        display: inline-block;
-        padding: 10px;
-        background: #41b883;
-        opacity: .6;
-        text-decoration: none;
-        text-transform: uppercase;
-        color: #fff;
-        border: none;
+    .no-cell {
         cursor: pointer;
-    }
-    .reset:hover {
-        opacity: 1;
-    }
-    .winner {
-        max-width: 300px;
-        text-align: center;
-        margin: auto;
-    }
-    .active {
-        transform: scale(1.5) translateY(25%);
-    }
-    .x-class {
-        color: red;
-        background-color: rgba(0, 128, 0, 0.2);
-    }
-    .o-class {
-        color: yellow;
-        background-color: rgba(0, 150, 136, 0.5);
     }
 </style>

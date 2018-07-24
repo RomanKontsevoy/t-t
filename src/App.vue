@@ -7,7 +7,7 @@
             <router-link class="router-link" to="/excel">Excel</router-link>
         </div>
         <HelloWorld
-                msg="Welcome to Tic-Tac game!"/>
+                msg="Welcome to Vue.js!"/>
         <router-view></router-view>
     </div>
 </template>

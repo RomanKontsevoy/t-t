@@ -12,7 +12,7 @@
 
     import Vue from 'vue';
     import Vuex from 'vuex';
-    import {FILL_CELL, CREATE_CELLS} from '../mutation-tipes'
+    import {FILL_CELL, CREATE_CELLS, ACTIVATE_CELL} from '../mutation-tipes'
 
     Vue.use(Vuex);
 
@@ -20,7 +20,9 @@
         state: {
             colsNum: 3,
             rowsNum: 2,
-            cells: []
+            cells: [],
+            activeId: "",
+            activeCell: false
         },
         getters: {
             cells(state) {
@@ -31,11 +33,20 @@
             },
             rowsNum(state) {
                 return state.rowsNum
+            },
+            activeId(state) {
+                return state.activeId
+            },
+            activeCell(state) {
+                return state.activeCell
             }
         },
         actions: {
             fillCell({commit}, id, text) {
                 commit(FILL_CELL, id, text);
+            },
+            activateCell({commit}, id) {
+                commit(ACTIVATE_CELL, id);
             },
             createCells({commit}) {
                 commit(CREATE_CELLS);
@@ -49,7 +60,7 @@
                     arr[i] = {
                         id: i,
                         colNum: i % state.colsNum,
-                        rowNum: parseInt(i % state.colsNum, 10) % state.rowsNum,
+                        rowNum: Math.floor(i / state.colsNum),
                         content: "",
                         isActive: false
                     };
@@ -58,11 +69,13 @@
             },
             FILL_CELL(state, id, text) {
                 Vue.set(state.cells[id], 'content', text);
-                state.cells.forEach(function (item) {
-                        Vue.set(item, 'isActive', false);
-                    }
-                );
+            },
+            ACTIVATE_CELL(state, id) {
+                // Vue.set(state.cells.find(item => item.isActive), 'isActive', false);
+                // this.$set(state.cells.find(item => item.isActive), 'isActive', false);
                 Vue.set(state.cells[id], 'isActive', true);
+                state.activeCell = true;
+                state.activeId = id;
             }
         }
     });
@@ -89,7 +102,7 @@
             consoleInput: function () {
                 this.cells.forEach(function (item) {
                         console.log("item.Id: " + item.id);
-                        // console.log("item.colNum: " + item.colNum);
+                        console.log("item.colNum: " + item.colNum);
                         console.log("item.rowNum: " + item.rowNum);
 
                     }
@@ -99,12 +112,12 @@
         mounted: function () {
             this.$nextTick(function () {
                 this.$store.dispatch('createCells');
-                this.consoleInput();
+                // this.consoleInput();
             })
         },
         updated: function () {
             this.$nextTick(function () {
-                this.consoleInput();
+                // this.consoleInput();
             })
         }
     }

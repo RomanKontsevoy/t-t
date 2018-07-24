@@ -1,38 +1,41 @@
 <template>
-        <input type="text" class="cell" :class="activeClass" @input="clickHandle" v-model="currentContent">
-
+        <input type="text" class="cell" :class="activeClass" @click="activate" v-model="currentCell.content">
 </template>
 
 <script>
     export default {
         name: "ExcelCell",
         props: {
-            content: String,
-            id: Number
+            cell: Object
         },
         data: function () {
             return {
-                currentId: this.id,
-                currentContent: this.content
+                currentCell: this.cell
             }
         },
         computed: {
+            activated(){
+                this.$store.getters.activeId
+            },
             activeClass() {
-                // if (this.content) {
-                //     return {
-                //         "x-class": this.currentContent === "X",
-                //         "o-class": this.currentContent === "O"
-                //     }
-                // }
+
             }
         },
         methods: {
             clickHandle: function () {
-                this.$store.dispatch('fillCell', this.currentId, this.currentContent);
+                this.$store.dispatch('fillCell', this.currentCell.id, this.currentCell.content);
+                // this.consoleInput();
+            },
+            activate: function () {
+                this.$store.dispatch('activateCell', this.currentCell.id);
                 this.consoleInput();
             },
             consoleInput: function () {
-                console.dir(this.currentContent);
+                console.dir("ID ячейки: " + this.currentCell.id);
+                // console.log("Строка: " + this.currentCell.rowNum);
+                // console.log("Столбец: " + this.currentCell.colNum);
+                console.log("Активность: " + this.currentCell.isActive);
+                console.log("Активная ячейка: " + this.activated);
             }
         },
         mounted: function () {

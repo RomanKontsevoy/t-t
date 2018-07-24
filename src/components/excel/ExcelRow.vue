@@ -3,7 +3,7 @@
         <ExcelCell
                 v-for="cell in currentCellsRange"
                 :key="cell.id"
-                v-bind="cell"/>
+                v-bind:cell="cell"/>
     </div>
 </template>
 
