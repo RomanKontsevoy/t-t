@@ -1,8 +1,24 @@
 <template>
-        <input type="text" class="cell" :class="activeClass" @click="activate" v-model="currentCell.content">
+    <div class="cell">
+        <vue-draggable-resizable :w="100" :h="100" v-on:dragging="onDrag" v-on:resizing="onResize" :parent="true">
+        <textarea
+                type="text"
+               :class="{'active': activeClass}"
+                @click="activate"
+                v-model="currentCell.content" />
+        </vue-draggable-resizable>
+    </div>
+
 </template>
 
 <script>
+    import Vue from 'vue'
+    import VueDraggableResizable from 'vue-draggable-resizable'
+
+    Vue.component('vue-draggable-resizable', VueDraggableResizable)
+
+
+
     export default {
         name: "ExcelCell",
         props: {
@@ -10,15 +26,19 @@
         },
         data: function () {
             return {
-                currentCell: this.cell
+                currentCell: this.cell,
+                width: 0,
+                height: 0,
+                x: 0,
+                y: 0
             }
         },
         computed: {
-            activated(){
-                this.$store.getters.activeId
+            activated () {
+                return this.$store.getters.activeId
             },
-            activeClass() {
-
+            activeClass () {
+                return !!this.currentCell.isActive // this.activated ? true :false
             }
         },
         methods: {
@@ -58,15 +78,35 @@
         font-family: sans-serif;
         margin: -1px 0 0 -1px;
         cursor: text;
+        position: relative;
+        overflow: visible;
     }
 
     .cell:hover {
         box-shadow: inset 0 0 2px purple;
     }
 
-    .x-class {
-        color: red;
-        background-color: rgba(0, 128, 0, 0.2);
+    .cell textarea {
+        display: block;
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 0 5px;
+        resize: none;
+    }
+
+    .cell .active {
+        display: inline-block;
+        border: 1px solid saddlebrown;
+        max-width: 80vw;
+        width: auto;
+        resize: both;
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+        z-index: 5;
+        box-sizing: content-box;
+        height: content-box;
     }
 
     .o-class {

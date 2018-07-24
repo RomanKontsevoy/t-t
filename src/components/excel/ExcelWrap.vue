@@ -71,8 +71,22 @@
                 Vue.set(state.cells[id], 'content', text);
             },
             ACTIVATE_CELL(state, id) {
+                /*1*/
+                // for (let i = 0; i < state.cells.length; i++ ) {
+                //     if(state.cells[i].isActive) {
+                //         console.log(state.cells[i].isActive);
+                //         Vue.set(state.cells[i].isActive, 'isActive', false)
+                //     }
+                // }
+                /*2*/
+                // state.cells.forEach(function (item) {
+                //    if(item.isActive) {
+                //        Vue.set(item.isActive, 'isActive', false)
+                //    }
+                // });
+                /*3*/
                 // Vue.set(state.cells.find(item => item.isActive), 'isActive', false);
-                // this.$set(state.cells.find(item => item.isActive), 'isActive', false);
+
                 Vue.set(state.cells[id], 'isActive', true);
                 state.activeCell = true;
                 state.activeId = id;
@@ -104,7 +118,6 @@
                         console.log("item.Id: " + item.id);
                         console.log("item.colNum: " + item.colNum);
                         console.log("item.rowNum: " + item.rowNum);
-
                     }
                 );
             }
@@ -112,11 +125,6 @@
         mounted: function () {
             this.$nextTick(function () {
                 this.$store.dispatch('createCells');
-                // this.consoleInput();
-            })
-        },
-        updated: function () {
-            this.$nextTick(function () {
                 // this.consoleInput();
             })
         }
