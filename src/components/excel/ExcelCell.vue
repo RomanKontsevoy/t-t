@@ -1,12 +1,13 @@
 <template>
     <div class="cell">
-        <vue-draggable-resizable :w="100" :h="100" v-on:dragging="onDrag" v-on:resizing="onResize" :parent="true">
         <textarea
+                ref="textarea"
                 type="text"
                :class="{'active': activeClass}"
                 @click="activate"
-                v-model="currentCell.content" />
-        </vue-draggable-resizable>
+                v-model="currentCell.content"
+                v-bind:cols="cols">
+        </textarea>
     </div>
 
 </template>
@@ -27,10 +28,7 @@
         data: function () {
             return {
                 currentCell: this.cell,
-                width: 0,
-                height: 0,
-                x: 0,
-                y: 0
+                cols: 10,
             }
         },
         computed: {
@@ -41,7 +39,26 @@
                 return !!this.currentCell.isActive // this.activated ? true :false
             }
         },
+        watch: {
+            'currentCell.content': function (newVal, oldVal) {
+                console.log('value changed from ' + oldVal + ' to ' + newVal);
+                this.colsHandle();
+            }
+        },
         methods: {
+            colsHandle: function() {
+                let textlength = this.$refs.textarea.textLength;
+                if(textlength <= 10) {
+                    console.log(textlength);
+                    this.cols = 10;
+                } else if (textlength > 30) {
+                    console.log(textlength);
+                    this.cols = 30;
+                } else {
+                    console.log(textlength);
+                    this.cols = textlength;
+                }
+            },
             clickHandle: function () {
                 this.$store.dispatch('fillCell', this.currentCell.id, this.currentCell.content);
                 // this.consoleInput();
@@ -52,6 +69,7 @@
             },
             consoleInput: function () {
                 console.dir("ID ячейки: " + this.currentCell.id);
+                console.dir(this.$refs.textarea);
                 // console.log("Строка: " + this.currentCell.rowNum);
                 // console.log("Столбец: " + this.currentCell.colNum);
                 console.log("Активность: " + this.currentCell.isActive);
@@ -72,8 +90,8 @@
         justify-content: center;
         align-items: center;
         font-size: 30px;
-        width: 100px;
         height: 40px;
+        width: 100px;
         border: 1px solid rebeccapurple;
         font-family: sans-serif;
         margin: -1px 0 0 -1px;
@@ -88,7 +106,6 @@
 
     .cell textarea {
         display: block;
-        width: 100%;
         height: 100%;
         border: none;
         padding: 0 5px;
@@ -99,7 +116,6 @@
         display: inline-block;
         border: 1px solid saddlebrown;
         max-width: 80vw;
-        width: auto;
         resize: both;
         left: 50%;
         transform: translateX(-50%);
